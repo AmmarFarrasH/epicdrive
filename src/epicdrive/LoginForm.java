@@ -31,6 +31,7 @@ public class LoginForm extends javax.swing.JFrame {
         DB.config();
         con = DB.con;
         stat = DB.stm;
+        btnregister.setEnabled(false);
     }
     
     
@@ -183,10 +184,10 @@ public class LoginForm extends javax.swing.JFrame {
                 if(txtusername.getText().equals(rs.getString("username")) && txtpassword.getText().equals(rs.getString("password"))){
                     if(level.equals("admin")){
                         JOptionPane.showMessageDialog(null, "welcome admin");
-                        new MenuAdmin().setVisible(true);
+                        new AdminMenu().setVisible(true);
                     } else if(level.equals("member")) {
                         JOptionPane.showMessageDialog(null, "welcome Member");
-                        new MenuMember().setVisible(true);
+                        new MemberMenu().setVisible(true);
                     }
                     this.dispose();
                 }
@@ -200,6 +201,9 @@ public class LoginForm extends javax.swing.JFrame {
 
     private void btnregisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnregisterActionPerformed
         // TODO add your handling code here:
+//        btnregister.setEnabled(false);
+        new Register().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnregisterActionPerformed
 
     /**
