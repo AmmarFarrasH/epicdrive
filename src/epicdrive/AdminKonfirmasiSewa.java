@@ -252,6 +252,8 @@ public class AdminKonfirmasiSewa extends javax.swing.JFrame {
             pstDelete.execute();
             
             JOptionPane.showMessageDialog(null, "Data berhasil dikonfirmasi dan disimpan ke tabel sewa");
+            
+            load_table();
         } else {
             // Jika id_formsewa tidak ditemukan
             JOptionPane.showMessageDialog(null, "ID Form Sewa tidak ditemukan");

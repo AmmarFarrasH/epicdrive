@@ -4,6 +4,10 @@
  */
 package epicdrive;
 
+import java.sql.Connection;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Ammar
@@ -15,7 +19,58 @@ public class AdminMobil extends javax.swing.JFrame {
      */
     public AdminMobil() {
         initComponents();
+        setTitle("DAFTAR MOBIL");
+        load_table();
     }
+    
+    private void load_table(){
+        // membuat tampilan model tabel
+        DefaultTableModel model = new DefaultTableModel(new Object[][]{}, new String[] {
+        "ID Mobil", "NAMA MOBIL", "MERK", "HARGA SEWA", "STATUS"
+    }) {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false; // Mencegah pengeditan semua kolom
+        }
+    };
+        
+        //menampilkan data database kedalam tabel
+        try {
+            int no=1;
+            String sql = "select * from MOBIL";
+            java.sql.Connection conn=(Connection)MemberFormulirMobil.config.configDB();
+            java.sql.Statement stm=conn.createStatement();
+            java.sql.ResultSet res=stm.executeQuery(sql);
+            while(res.next()){
+                model.addRow(new Object[]{
+                    res.getString(1),
+                    res.getString(2),
+                    res.getString(3),
+                    res.getString(4),
+                    res.getString(5)
+                });
+            }
+            jTable1.setModel(model);
+        } catch (Exception e) {
+        }
+        
+        // Tambahkan MouseListener untuk menangkap data baris yang diklik
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            int selectedRow = jTable1.getSelectedRow();
+            if (selectedRow != -1) {
+                // Ambil data dari baris yang dipilih dan masukkan ke JTextFields
+                txtidmobil.setText(jTable1.getValueAt(selectedRow, 0).toString());
+//                txtNik.setText(jTable1.getValueAt(selectedRow, 1).toString());
+//                txtNamaPenyewa.setText(jTable1.getValueAt(selectedRow, 2).toString());
+//                txtAlamat.setText(jTable1.getValueAt(selectedRow, 3).toString());
+//                txtTanggalSewa.setText(jTable1.getValueAt(selectedRow, 4).toString());
+//                txtTanggalPengembalian.setText(jTable1.getValueAt(selectedRow, 5).toString());
+            }
+        }
+    });
+    }
+        
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -38,8 +93,6 @@ public class AdminMobil extends javax.swing.JFrame {
         txtnamamobil = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txtmerk = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        txtwarna = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         txtharga = new javax.swing.JTextField();
@@ -72,13 +125,13 @@ public class AdminMobil extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "ID MOBIL", "NAMA MOBIL", "MERK", "WARNA", "HARGA SEWA", "STATUS"
+                "ID MOBIL", "NAMA MOBIL", "MERK", "HARGA SEWA", "STATUS"
             }
         ));
         jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -108,15 +161,6 @@ public class AdminMobil extends javax.swing.JFrame {
         txtmerk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtmerkActionPerformed(evt);
-            }
-        });
-
-        jLabel7.setFont(new java.awt.Font("Sylfaen", 0, 12)); // NOI18N
-        jLabel7.setText("WARNA");
-
-        txtwarna.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtwarnaActionPerformed(evt);
             }
         });
 
@@ -160,28 +204,31 @@ public class AdminMobil extends javax.swing.JFrame {
                                 .addGap(35, 35, 35)
                                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(panel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(185, 185, 185)
-                                        .addComponent(jLabel5))
-                                    .addGroup(panel1Layout.createSequentialGroup()
-                                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(btnedit, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(txtidmobil, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jLabel7)
-                                                .addComponent(txtwarna, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(panel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel3)
+                                                .addGap(185, 185, 185)
+                                                .addComponent(jLabel5))
+                                            .addGroup(panel1Layout.createSequentialGroup()
+                                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addComponent(btnedit, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(txtidmobil, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(23, 23, 23)
+                                                .addComponent(txtnamamobil, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addGap(23, 23, 23)
                                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtmerk, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel6)
+                                            .addComponent(btnsubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(panel1Layout.createSequentialGroup()
+                                        .addGap(116, 116, 116)
+                                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(txtharga, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel8)
-                                            .addComponent(txtnamamobil, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(23, 23, 23)
-                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtmerk, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel9)
-                                    .addComponent(btnsubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                            .addComponent(jLabel8))
+                                        .addGap(37, 37, 37)
+                                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel9)
+                                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addGroup(panel1Layout.createSequentialGroup()
                                 .addGap(259, 259, 259)
                                 .addComponent(jLabel1)))
@@ -207,14 +254,12 @@ public class AdminMobil extends javax.swing.JFrame {
                     .addComponent(txtmerk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32)
                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
                     .addComponent(jLabel8)
                     .addComponent(jLabel9))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtwarna, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtharga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtharga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(49, 49, 49)
                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnsubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -239,11 +284,25 @@ public class AdminMobil extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnsubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsubmitActionPerformed
-        // TODO add your handling code here:
+        try {
+            String sql = "INSERT INTO mobil (id_mobil, nama_mobil, merk, harga_sewa, status) VALUES ('"+txtidmobil.getText()+"','"+txtnamamobil.getText()+"','"+txtmerk.getText()+"','"+txtharga.getText()+"','"+jComboBox1.getSelectedItem().toString()+"')";
+            java.sql.Connection conn=(Connection)MemberFormulirMobil.config.configDB();
+            java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+            pst.execute();
+            JOptionPane.showMessageDialog(null, "Penyimpanan Data Berhasil");
+            
+            txtidmobil.setText("");
+            txtnamamobil.setText("");
+            txtmerk.setText("");
+            txtharga.setText("");
+            
+            load_table();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
     }//GEN-LAST:event_btnsubmitActionPerformed
 
     private void btnkembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnkembaliActionPerformed
-        // TODO add your handling code here:
         new AdminMenu().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnkembaliActionPerformed
@@ -259,10 +318,6 @@ public class AdminMobil extends javax.swing.JFrame {
     private void txtmerkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtmerkActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtmerkActionPerformed
-
-    private void txtwarnaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtwarnaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtwarnaActionPerformed
 
     private void txthargaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txthargaActionPerformed
         // TODO add your handling code here:
@@ -316,7 +371,6 @@ public class AdminMobil extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
@@ -326,6 +380,5 @@ public class AdminMobil extends javax.swing.JFrame {
     private javax.swing.JTextField txtidmobil;
     private javax.swing.JTextField txtmerk;
     private javax.swing.JTextField txtnamamobil;
-    private javax.swing.JTextField txtwarna;
     // End of variables declaration//GEN-END:variables
 }
