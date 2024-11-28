@@ -4,7 +4,6 @@
  */
 package epicdrive;
 
-import epicdrive.MemberFormulirMobil.config;
 import java.sql.Connection;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -27,7 +26,7 @@ public class AdminKonfirmasiSewa extends javax.swing.JFrame {
     private void load_table(){
         // membuat tampilan model tabel
         DefaultTableModel model = new DefaultTableModel(new Object[][]{}, new String[] {
-        "ID SEWA", "NIK", "NAMA PENYEWA", "ALAMAT", "TANGGAL SEWA", "TANGGAL PENGEMBALIAN"
+        "ID SEWA", "NIK", "NAMA PENYEWA", "ALAMAT", "NO TELEPON", "ID MOBIL", "TANGGAL SEWA", "TANGGAL PENGEMBALIAN"
     }) {
         @Override
         public boolean isCellEditable(int row, int column) {
@@ -38,8 +37,8 @@ public class AdminKonfirmasiSewa extends javax.swing.JFrame {
         //menampilkan data database kedalam tabel
         try {
             int no=1;
-            String sql = "select * from formsewa";
-            java.sql.Connection conn=(Connection)MemberFormulirMobil.config.configDB();
+            String sql = "select * from membersewa";
+            java.sql.Connection conn=(Connection)koneksi.config.configDB();
             java.sql.Statement stm=conn.createStatement();
             java.sql.ResultSet res=stm.executeQuery(sql);
             while(res.next()){
@@ -49,7 +48,9 @@ public class AdminKonfirmasiSewa extends javax.swing.JFrame {
                     res.getString(3),
                     res.getString(4),
                     res.getString(5),
-                    res.getString(6)
+                    res.getString(6),
+                    res.getString(7),
+                    res.getString(8),
                 });
             }
             jTable1.setModel(model);
@@ -119,13 +120,13 @@ public class AdminKonfirmasiSewa extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID SEWA", "NIK", "NAMA PENYEWA", "ALAMAT", "TANGGAL SEWA", "TANGGAL PENGEMBALIAN"
+                "ID SEWA", "NIK", "NAMA PENYEWA", "ALAMAT", "ID MOBIL", "TANGGAL SEWA", "TANGGAL PENGEMBALIAN"
             }
         ));
         jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -220,47 +221,52 @@ public class AdminKonfirmasiSewa extends javax.swing.JFrame {
     private void btnkonfirmasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnkonfirmasiActionPerformed
         // TODO add your handling code here:
         try {
-        // Ambil nilai id_formsewa dari JTextField
-        String idForm = txtid.getText();
+    // Ambil nilai id_membersewa dari JTextField
+    String idForm = txtid.getText();
 
-        // Query untuk mengecek apakah id_formsewa ada di database
-        String sqlCheck = "SELECT * FROM formsewa WHERE id_form = ?";
-        java.sql.Connection conn = (Connection) config.configDB();
-        java.sql.PreparedStatement pstCheck = conn.prepareStatement(sqlCheck);
-        pstCheck.setString(1, idForm);
-        
-        java.sql.ResultSet rs = pstCheck.executeQuery();
+    // Query untuk mengecek apakah id_membersewa ada di database
+    String sqlCheck = "SELECT * FROM membersewa WHERE id_membersewa = ?";
+    java.sql.Connection conn = (Connection) koneksi.config.configDB();
+    java.sql.PreparedStatement pstCheck = conn.prepareStatement(sqlCheck);
+    pstCheck.setString(1, idForm);
 
-        if (rs.next()) {
-            // Jika id_form ditemukan, tambahkan data ke tabel 'sewa'
-            String sql = "INSERT INTO sewa (nik, namapenyewa, alamat, tanggalsewa, tanggalpengembalian, keterangan) VALUES (?, ?, ?, ?, ?,'"+txtketerangan.getText()+"')";
-            java.sql.PreparedStatement pst = conn.prepareStatement(sql);
-            
-//            pst.setString(1, rs.getString("id_form"));
-            pst.setString(1, rs.getString("nik"));
-            pst.setString(2, rs.getString("namapenyewa"));
-            pst.setString(3, rs.getString("alamat"));
-            pst.setString(4, rs.getString("tanggalsewa"));
-            pst.setString(5, rs.getString("tanggalpengembalian"));
-            
-            pst.execute();
-            
-            // Jika data berhasil dimasukkan, hapus dari formsewa
-            String sqlDelete = "DELETE FROM formsewa WHERE id_form = ?";
-            java.sql.PreparedStatement pstDelete = conn.prepareStatement(sqlDelete);
-            pstDelete.setString(1, idForm);
-            pstDelete.execute();
-            
-            JOptionPane.showMessageDialog(null, "Data berhasil dikonfirmasi dan disimpan ke tabel sewa");
-            
-            load_table();
-        } else {
-            // Jika id_formsewa tidak ditemukan
-            JOptionPane.showMessageDialog(null, "ID Form Sewa tidak ditemukan");
-        }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, e.getMessage());
+    java.sql.ResultSet rs = pstCheck.executeQuery();
+
+    if (rs.next()) {
+        // Jika id_membersewa ditemukan, tambahkan data ke tabel 'sewa'
+        String sql = "INSERT INTO sewa (nik, nama, alamat, no_tlp, id_mobil, tglsewa, tglkembali, keterangan) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        java.sql.PreparedStatement pst = conn.prepareStatement(sql);
+
+        // Isi parameter berdasarkan hasil query sebelumnya
+        pst.setString(1, rs.getString("nik"));
+        pst.setString(2, rs.getString("nama"));
+        pst.setString(3, rs.getString("alamat"));
+        pst.setString(4, rs.getString("no_tlp"));
+        pst.setString(5, rs.getString("id_mobil"));
+        pst.setString(6, rs.getString("tglsewa"));
+        pst.setString(7, rs.getString("tglkembali"));
+        pst.setString(8, txtketerangan.getText()); // Ambil langsung dari JTextField
+
+        pst.execute();
+
+        // Jika data berhasil dimasukkan, hapus dari membersewa
+        String sqlDelete = "DELETE FROM membersewa WHERE id_membersewa = ?";
+        java.sql.PreparedStatement pstDelete = conn.prepareStatement(sqlDelete);
+        pstDelete.setString(1, idForm);
+        pstDelete.execute();
+
+        JOptionPane.showMessageDialog(null, "Data berhasil dikonfirmasi dan disimpan ke tabel sewa");
+
+        // Refresh tabel jika ada
+        load_table();
+    } else {
+        // Jika id_membersewa tidak ditemukan
+        JOptionPane.showMessageDialog(null, "ID Form Sewa tidak ditemukan");
     }
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(this, e.getMessage());
+}
+
     }//GEN-LAST:event_btnkonfirmasiActionPerformed
 
     private void btnregisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnregisterActionPerformed

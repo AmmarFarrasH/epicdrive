@@ -37,7 +37,7 @@ public class AdminMobil extends javax.swing.JFrame {
         //menampilkan data database kedalam tabel
         try {
             int no=1;
-            String sql = "select * from MOBIL";
+            String sql = "select * from mobil";
             java.sql.Connection conn=(Connection)MemberFormulirMobil.config.configDB();
             java.sql.Statement stm=conn.createStatement();
             java.sql.ResultSet res=stm.executeQuery(sql);
@@ -61,11 +61,10 @@ public class AdminMobil extends javax.swing.JFrame {
             if (selectedRow != -1) {
                 // Ambil data dari baris yang dipilih dan masukkan ke JTextFields
                 txtidmobil.setText(jTable1.getValueAt(selectedRow, 0).toString());
-//                txtNik.setText(jTable1.getValueAt(selectedRow, 1).toString());
-//                txtNamaPenyewa.setText(jTable1.getValueAt(selectedRow, 2).toString());
-//                txtAlamat.setText(jTable1.getValueAt(selectedRow, 3).toString());
-//                txtTanggalSewa.setText(jTable1.getValueAt(selectedRow, 4).toString());
-//                txtTanggalPengembalian.setText(jTable1.getValueAt(selectedRow, 5).toString());
+                txtnamamobil.setText(jTable1.getValueAt(selectedRow, 1).toString());
+                txtmerk.setText(jTable1.getValueAt(selectedRow, 2).toString());
+                txtharga.setText(jTable1.getValueAt(selectedRow, 3).toString());
+                jComboBox1.setSelectedItem(jTable1.getValueAt(selectedRow, 4).toString());
             }
         }
     });
@@ -98,6 +97,7 @@ public class AdminMobil extends javax.swing.JFrame {
         txtharga = new javax.swing.JTextField();
         btnedit = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
+        btndelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -186,6 +186,14 @@ public class AdminMobil extends javax.swing.JFrame {
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "tersedia", "tidak tersedia" }));
 
+        btndelete.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        btndelete.setText("DELETE");
+        btndelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btndeleteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
         panel1.setLayout(panel1Layout);
         panel1Layout.setHorizontalGroup(
@@ -198,11 +206,17 @@ public class AdminMobil extends javax.swing.JFrame {
                     .addGroup(panel1Layout.createSequentialGroup()
                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panel1Layout.createSequentialGroup()
-                                .addGap(345, 345, 345)
-                                .addComponent(btnkembali, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panel1Layout.createSequentialGroup()
                                 .addGap(35, 35, 35)
                                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(panel1Layout.createSequentialGroup()
+                                        .addGap(116, 116, 116)
+                                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtharga, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel8))
+                                        .addGap(37, 37, 37)
+                                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel9)
+                                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(panel1Layout.createSequentialGroup()
                                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(panel1Layout.createSequentialGroup()
@@ -214,21 +228,22 @@ public class AdminMobil extends javax.swing.JFrame {
                                                     .addComponent(btnedit, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addComponent(txtidmobil, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addGap(23, 23, 23)
-                                                .addComponent(txtnamamobil, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGap(23, 23, 23)
+                                                .addComponent(txtnamamobil, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(panel1Layout.createSequentialGroup()
+                                                .addGap(310, 310, 310)
+                                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addComponent(btndelete, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(btnkembali, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtmerk, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel6)
-                                            .addComponent(btnsubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(panel1Layout.createSequentialGroup()
-                                        .addGap(116, 116, 116)
-                                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtharga, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel8))
-                                        .addGap(37, 37, 37)
-                                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel9)
-                                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                            .addGroup(panel1Layout.createSequentialGroup()
+                                                .addGap(23, 23, 23)
+                                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(txtmerk, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(jLabel6)))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(btnsubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(98, 98, 98))))))
                             .addGroup(panel1Layout.createSequentialGroup()
                                 .addGap(259, 259, 259)
                                 .addComponent(jLabel1)))
@@ -263,7 +278,8 @@ public class AdminMobil extends javax.swing.JFrame {
                 .addGap(49, 49, 49)
                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnsubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnedit, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnedit, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btndelete, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
                 .addComponent(btnkembali, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30))
@@ -325,7 +341,80 @@ public class AdminMobil extends javax.swing.JFrame {
 
     private void btneditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneditActionPerformed
         // TODO add your handling code here:
+        try {
+            // Query untuk mengupdate data berdasarkan id_mobil
+            String sql = "UPDATE mobil SET nama_mobil=?, merk=?, harga_sewa=?, status=? WHERE id_mobil=?";
+
+            // Koneksi ke database dan siapkan query
+            java.sql.Connection conn = (Connection) MemberFormulirMobil.config.configDB();
+            java.sql.PreparedStatement pst = conn.prepareStatement(sql);
+
+            // Set parameter berdasarkan data dari text field
+            pst.setString(1, txtnamamobil.getText());
+            pst.setString(2, txtmerk.getText());
+            pst.setString(3, txtharga.getText());
+            pst.setString(4, jComboBox1.getSelectedItem().toString());
+            pst.setString(5, txtidmobil.getText()); // Acuan utama adalah id_mobil
+
+            /// Eksekusi perintah update dan periksa jumlah baris yang diupdate
+            int rowsAffected = pst.executeUpdate();
+
+            if (rowsAffected > 0) {
+                JOptionPane.showMessageDialog(null, "Data berhasil diperbarui");
+
+                // Refresh tabel dan kosongkan form setelah update
+                load_table();
+                kosongkanForm();
+            } else {
+                // Jika tidak ada baris yang diupdate, berarti id_mobil tidak ditemukan
+                JOptionPane.showMessageDialog(this, "ID tidak ditemukan");
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
+    }
+
+    // Fungsi untuk mengosongkan form setelah penyimpanan
+    private void kosongkanForm() {
+        txtidmobil.setText("");
+        txtnamamobil.setText("");
+        txtmerk.setText("");
+        txtharga.setText("");
+        jComboBox1.setSelectedIndex(0);
     }//GEN-LAST:event_btneditActionPerformed
+
+    private void btndeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndeleteActionPerformed
+        // TODO add your handling code here:
+        try {
+            // Query untuk menghapus data berdasarkan id_mobil
+            String sql = "DELETE FROM mobil WHERE id_mobil=?";
+
+            // Koneksi ke database dan siapkan query
+            java.sql.Connection conn = (Connection) koneksi.config.configDB();
+            java.sql.PreparedStatement pst = conn.prepareStatement(sql);
+
+            // Set parameter id_mobil berdasarkan input pengguna
+            pst.setString(1, txtidmobil.getText());
+
+            // Eksekusi perintah delete dan periksa jumlah baris yang terpengaruh
+            int rowsAffected = pst.executeUpdate();
+
+            if (rowsAffected > 0) {
+                JOptionPane.showMessageDialog(null, "Data berhasil dihapus");
+
+                // Refresh tabel dan kosongkan form setelah delete
+                load_table();
+                kosongkanForm();
+            } else {
+                // Jika tidak ada baris yang dihapus, berarti id_mobil tidak ditemukan
+                JOptionPane.showMessageDialog(this, "ID tidak ditemukan");
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
+    }//GEN-LAST:event_btndeleteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -363,6 +452,7 @@ public class AdminMobil extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btndelete;
     private javax.swing.JButton btnedit;
     private javax.swing.JButton btnkembali;
     private javax.swing.JButton btnsubmit;

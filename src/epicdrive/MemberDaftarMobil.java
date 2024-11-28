@@ -4,19 +4,56 @@
  */
 package epicdrive;
 
+import java.sql.Connection;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Ammar
  */
-public class DaftarMobil extends javax.swing.JFrame {
+public class MemberDaftarMobil extends javax.swing.JFrame {
 
     /**
      * Creates new form DaftarMobil
      */
-    public DaftarMobil() {
+    public MemberDaftarMobil() {
         initComponents();
+        setTitle("DAFTAR MOBIL");
+        load_table();
     }
 
+    private void load_table(){
+        // membuat tampilan model tabel
+        DefaultTableModel model = new DefaultTableModel(new Object[][]{}, new String[] {
+        "ID Mobil", "NAMA MOBIL", "MERK", "HARGA SEWA /HARI", "STATUS"
+    }) {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false; // Mencegah pengeditan semua kolom
+        }
+    };
+        
+        //menampilkan data database kedalam tabel
+        try {
+            int no=1;
+            String sql = "select * from mobil";
+            java.sql.Connection conn=(Connection)koneksi.config.configDB();
+            java.sql.Statement stm=conn.createStatement();
+            java.sql.ResultSet res=stm.executeQuery(sql);
+            while(res.next()){
+                model.addRow(new Object[]{
+                    res.getString(1),
+                    res.getString(2),
+                    res.getString(3),
+                    res.getString(4),
+                    res.getString(5)
+                });
+            }
+            jTable1.setModel(model);
+        } catch (Exception e) {
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -37,17 +74,17 @@ public class DaftarMobil extends javax.swing.JFrame {
         panel1.setBackground(new java.awt.Color(255, 204, 153));
 
         jLabel1.setFont(new java.awt.Font("Sylfaen", 1, 24)); // NOI18N
-        jLabel1.setText("DAFTAR PENYEWA");
+        jLabel1.setText("Daftar Mobil");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "NIK", "NAMA PENYEWA", "ALAMAT", "TANGGAL SEWA", "TANGGAL PENGEMBALIAN", "KETERANGAN"
+                "ID MOBIL", "NAMA MOBIL", "MERK", "HARGA SEWA /HARI", "STATUS"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -64,17 +101,17 @@ public class DaftarMobil extends javax.swing.JFrame {
         panel1Layout.setHorizontalGroup(
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel1Layout.createSequentialGroup()
-                .addGap(292, 292, 292)
-                .addComponent(jLabel1)
-                .addContainerGap(265, Short.MAX_VALUE))
-            .addGroup(panel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 773, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(351, 351, 351))
+            .addGroup(panel1Layout.createSequentialGroup()
+                .addGap(323, 323, 323)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panel1Layout.setVerticalGroup(
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -104,7 +141,6 @@ public class DaftarMobil extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        new MemberMenu().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -125,20 +161,21 @@ public class DaftarMobil extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DaftarMobil.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MemberDaftarMobil.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DaftarMobil.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MemberDaftarMobil.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DaftarMobil.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MemberDaftarMobil.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DaftarMobil.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MemberDaftarMobil.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DaftarMobil().setVisible(true);
+                new MemberDaftarMobil().setVisible(true);
             }
         });
     }
