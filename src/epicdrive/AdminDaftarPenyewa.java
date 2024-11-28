@@ -25,11 +25,15 @@ public class AdminDaftarPenyewa extends javax.swing.JFrame {
     private void load_table(){
         // membuat tampilan model tabel
         DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("ID SEWA");
         model.addColumn("NIK");
         model.addColumn("NAMA PENYEWA");
         model.addColumn("ALAMAT");
+        model.addColumn("NO TELEPON");
+        model.addColumn("ID MOBIL");
         model.addColumn("TANGGAL SEWA");
         model.addColumn("TANGGAL PENGEMBALIAN");
+        model.addColumn("KETERANGAN");
         
         //menampilkan data database kedalam tabel
         try {
@@ -39,7 +43,7 @@ public class AdminDaftarPenyewa extends javax.swing.JFrame {
             java.sql.Statement stm=conn.createStatement();
             java.sql.ResultSet res=stm.executeQuery(sql);
             while(res.next()){
-                model.addRow(new Object[]{res.getString(2),res.getString(3),res.getString(4),res.getString(5),res.getString(6),res.getString(7)});
+                model.addRow(new Object[]{res.getString(1),res.getString(2),res.getString(3),res.getString(4),res.getString(5),res.getString(6),res.getString(7),res.getString(8),res.getString(9)});
             }
             jTable1.setModel(model);
         } catch (Exception e) {
@@ -70,13 +74,13 @@ public class AdminDaftarPenyewa extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "NIK", "NAMA PENYEWA", "ALAMAT", "TANGGAL SEWA", "TANGGAL PENGEMBALIAN", "KETERANGAN"
+                "ID SEWA", "NIK", "NAMA PENYEWA", "ALAMAT", "NO TELEPON", "ID MOBIL", "TANGGAL SEWA", "TANGGAL PENGEMBALIAN", "KETERANGAN"
             }
         ));
         jScrollPane1.setViewportView(jTable1);

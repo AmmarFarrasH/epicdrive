@@ -255,7 +255,7 @@ public class AdminKonfirmasiSewa extends javax.swing.JFrame {
         pstDelete.setString(1, idForm);
         pstDelete.execute();
 
-        JOptionPane.showMessageDialog(null, "Data berhasil dikonfirmasi dan disimpan ke tabel sewa");
+        JOptionPane.showMessageDialog(null, "Berhasil Konfirmasi Sewa");
 
         // Refresh tabel jika ada
         load_table();
